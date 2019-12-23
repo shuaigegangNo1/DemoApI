@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sgg.rest.dao.SysMenuDao">
+
+    <sql id="tableName">
+    sys_menu
+    </sql>
+
+
+    <!-- 查询一级菜单列表 -->
+    <select id="selectfirstMenuList" resultType="com.sgg.rest.dto.FirstMenuDto">
+        SELECT  id,text,i18n FROM sys_menu where is_delete = 0 and parent_id = 0 order by id asc
+    </select>
+    
+
+    <select id="selectScondMenuList" resultType="com.sgg.rest.dto.SecondMenuDto">
+        SELECT
+            id,text,i18n,icon
+        FROM
+            <include refid="tableName"></include>
+        where parent_id=${menuId} and is_delete = 0 order by id ASC
+    </select>
+    
+    
+        <!-- 查询一级菜单列表 -->
+    <select id="selectfirstMenuListByRoleId" resultType="com.sgg.rest.dto.FirstMenuDto">
+        SELECT  m.id,text,i18n FROM sys_menu m left join  sys_role_menu rm on rm.id = m.id where m.is_delete = 0 and m.parent_id = 0 and rm.role_id=${roleId} order by m.id ASC
+    </select>
+    
+        <select id="selectThirdMenuList" resultType="com.sgg.rest.dto.ThirdMenuDto">
+        SELECT
+            id,text,i18n,link
+        FROM
+            <include refid="tableName"></include>
+        where parent_id=${menuId} and is_delete = 0 order by id ASC
+    </select>
+    
+        <!-- 查询自定义一级菜单列表 -->
+    <select id="selectFirstMenuDtoList" resultType="com.sgg.rest.dto.BaseMenuDto">
+        SELECT  id,text,i18n FROM sys_menu where is_delete = 0 and parent_id = 0 order by id asc
+    </select>
+</mapper>

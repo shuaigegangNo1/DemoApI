@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sgg.rest.dao.UserDao">
+
+    <sql id="tableName">
+    user
+    </sql>
+
+    <select id="getSignUpDataByDay" resultType="com.sgg.rest.dto.SignUpDataDto">
+        select count(*) as y, date_format(create_time, '%Y-%m-%d') as x from user 
+        where DATE_SUB(CURDATE(), INTERVAL 7 DAY) <![CDATA[<=]]> date(create_time)
+        group by date_format(create_time, '%Y-%m-%d');
+    </select>
+    
+        <select id="getSignUpDataByMonth" resultType="com.sgg.rest.dto.ChartDataDto">
+       select count(*) as y, CONCAT(CAST(date_format(create_time, '%m') AS SIGNED),'月') as x from user 
+       where date_format(create_time, '%Y') ='2019' 
+       group by date_format(create_time, '%m');
+    </select>
+</mapper>
