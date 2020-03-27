@@ -1,0 +1,81 @@
+<nz-card [nzBordered]="false">
+  <form nz-form [nzLayout]="'inline'" (ngSubmit)="getData()" class="search__form">
+    <div nz-row [nzGutter]="{ xs: 8, sm: 8, md: 8, lg: 24, xl: 48, xxl: 48 }">
+      <div nz-col nzMd="8" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="name">查询参数 1</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.param1" name="param1" placeholder="请输入" id="param1" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col nzMd="8" nzSm="24">
+        <nz-form-item>
+          <nz-form-label nzFor="text">查询参数 2</nz-form-label>
+          <nz-form-control>
+            <input nz-input [(ngModel)]="q.param2" name="param2" placeholder="请输入" id="param2" />
+          </nz-form-control>
+        </nz-form-item>
+      </div>
+      <div nz-col [nzSpan]="expandForm ? 24 : 8" [class.text-right]="expandForm">
+        <button nz-button type="submit" [nzType]="'primary'" [nzLoading]="loading">查询</button>
+        <button nz-button type="reset" (click)="reset()" class="mx-sm">重置</button>
+      </div>
+    </div>
+  </form>
+  <button nz-button (click)="create()" [nzType]="'primary'">
+    <i nz-icon nzType="plus"></i>
+    <span>新建</span>
+  </button>
+
+  <st #st [columns]="columns" [data]="data" [loading]="loading" [total]="total" (change)="stChange($event)">
+  </st>
+</nz-card>
+<ng-template #modalContent>
+      <nz-form-item>
+  	  	  	        <nz-form-label nzFor="orgNo">机构编号</nz-form-label>
+		        <nz-form-control>
+		          <input nz-input [(ngModel)]="sysOrganization.orgNo" name="orgNo" placeholder="请输入" id="orgNo" />
+		        </nz-form-control>
+	  	        <nz-form-label nzFor="orgName">机构全称</nz-form-label>
+		        <nz-form-control>
+		          <input nz-input [(ngModel)]="sysOrganization.orgName" name="orgName" placeholder="请输入" id="orgName" />
+		        </nz-form-control>
+	  	        <nz-form-label nzFor="orgAbr">机构简称</nz-form-label>
+		        <nz-form-control>
+		          <input nz-input [(ngModel)]="sysOrganization.orgAbr" name="orgAbr" placeholder="请输入" id="orgAbr" />
+		        </nz-form-control>
+	  	        <nz-form-label nzFor="orgType">机构类型</nz-form-label>
+		        <nz-form-control>
+		          <input nz-input [(ngModel)]="sysOrganization.orgType" name="orgType" placeholder="请输入" id="orgType" />
+		        </nz-form-control>
+	  	        <nz-form-label nzFor="orgStatus">机构状态,1未营业、2正常营业、3暂停营业、4终止营业、5已除名</nz-form-label>
+		        <nz-form-control>
+		          <input nz-input [(ngModel)]="sysOrganization.orgStatus" name="orgStatus" placeholder="请输入" id="orgStatus" />
+		        </nz-form-control>
+	  	        <nz-form-label nzFor="orgParentNo">机构父节点编号</nz-form-label>
+		        <nz-form-control>
+		          <input nz-input [(ngModel)]="sysOrganization.orgParentNo" name="orgParentNo" placeholder="请输入" id="orgParentNo" />
+		        </nz-form-control>
+	  	        <nz-form-label nzFor="sort">机构显示顺序</nz-form-label>
+		        <nz-form-control>
+		          <input nz-input [(ngModel)]="sysOrganization.sort" name="sort" placeholder="请输入" id="sort" />
+		        </nz-form-control>
+	  	        <nz-form-label nzFor="remark">备注</nz-form-label>
+		        <nz-form-control>
+		          <input nz-input [(ngModel)]="sysOrganization.remark" name="remark" placeholder="请输入" id="remark" />
+		        </nz-form-control>
+  	        	<nz-form-label nzFor="orgCreateTime">机构创建时间</nz-form-label>
+		        <nz-form-control>
+  			      <nz-date-picker formControlName="orgCreateTime" nzShowTime nzFormat="YYYY-MM-DD HH:mm:ss" nzDisabled=false
+		       		 [(ngModel)]="sysOrganization.orgCreateTime">
+	      			</nz-date-picker>
+		        </nz-form-control>   
+  	        	<nz-form-label nzFor="orgStopTime">机构停运时间</nz-form-label>
+		        <nz-form-control>
+  			      <nz-date-picker formControlName="orgStopTime" nzShowTime nzFormat="YYYY-MM-DD HH:mm:ss" nzDisabled=false
+		       		 [(ngModel)]="sysOrganization.orgStopTime">
+	      			</nz-date-picker>
+		        </nz-form-control>   
+      </nz-form-item>
+</ng-template>

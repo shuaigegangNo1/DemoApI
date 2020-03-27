@@ -1,0 +1,71 @@
+<page-header [title]="sysOrganization.id?'修改机构表':'创建机构表'">
+</page-header>
+<nz-card [nzBordered]="false">
+  <form nz-form [formGroup]="form" se-container="1" labelWidth="200">
+		    <se label="机构编号" error="请输入机构编号" >
+		      <input nz-input formControlName="orgNo" placeholder="请你的输入机构编号" [(ngModel)]="sysOrganization.orgNo"
+		        style="width: calc(100% - 400px);" />
+		    </se>
+		    <se label="机构全称" error="请输入机构全称" >
+		      <input nz-input formControlName="orgName" placeholder="请你的输入机构全称" [(ngModel)]="sysOrganization.orgName"
+		        style="width: calc(100% - 400px);" />
+		    </se>
+		    <se label="机构简称" error="请输入机构简称" >
+		      <input nz-input formControlName="orgAbr" placeholder="请你的输入机构简称" [(ngModel)]="sysOrganization.orgAbr"
+		        style="width: calc(100% - 400px);" />
+		    </se>
+		    <se label="机构类型" error="请输入机构类型" >
+		      <input nz-input formControlName="orgType" placeholder="请你的输入机构类型" [(ngModel)]="sysOrganization.orgType"
+		        style="width: calc(100% - 400px);" />
+		    </se>
+		    <se label="机构状态,1未营业、2正常营业、3暂停营业、4终止营业、5已除名" error="请输入机构状态,1未营业、2正常营业、3暂停营业、4终止营业、5已除名" >
+		      <input nz-input formControlName="orgStatus" placeholder="请你的输入机构状态,1未营业、2正常营业、3暂停营业、4终止营业、5已除名" [(ngModel)]="sysOrganization.orgStatus"
+		        style="width: calc(100% - 400px);" />
+		    </se>
+		    <se label="机构父节点编号" error="请输入机构父节点编号" >
+		      <input nz-input formControlName="orgParentNo" placeholder="请你的输入机构父节点编号" [(ngModel)]="sysOrganization.orgParentNo"
+		        style="width: calc(100% - 400px);" />
+		    </se>
+		    <se label="机构显示顺序" error="请输入机构显示顺序" >
+		      <input nz-input formControlName="sort" placeholder="请你的输入机构显示顺序" [(ngModel)]="sysOrganization.sort"
+		        style="width: calc(100% - 400px);" />
+		    </se>
+		    <se label="备注" error="请输入备注" >
+		      <input nz-input formControlName="remark" placeholder="请你的输入备注" [(ngModel)]="sysOrganization.remark"
+		        style="width: calc(100% - 400px);" />
+		    </se>
+		    <se label="创建时间" error="请输入创建时间" required>
+		      <nz-date-picker formControlName="createTime" nzShowTime nzFormat="YYYY-MM-DD HH:mm:ss" nzDisabled=false
+		        [(ngModel)]="sysOrganization.createTime">
+		      </nz-date-picker>
+		    </se>
+		    <se label="创建人" error="请输入创建人" >
+		      <input nz-input formControlName="creator" placeholder="请你的输入创建人" [(ngModel)]="sysOrganization.creator"
+		        style="width: calc(100% - 400px);" />
+		    </se>
+		    <se label="更新时间" error="请输入更新时间" >
+		      <nz-date-picker formControlName="updateTime" nzShowTime nzFormat="YYYY-MM-DD HH:mm:ss" nzDisabled=false
+		        [(ngModel)]="sysOrganization.updateTime">
+		      </nz-date-picker>
+		    </se>
+		    <se label="更新人" error="请输入更新人" >
+		      <input nz-input formControlName="updater" placeholder="请你的输入更新人" [(ngModel)]="sysOrganization.updater"
+		        style="width: calc(100% - 400px);" />
+		    </se>
+		    <se label="机构创建时间" error="请输入机构创建时间" required>
+		      <nz-date-picker formControlName="orgCreateTime" nzShowTime nzFormat="YYYY-MM-DD HH:mm:ss" nzDisabled=false
+		        [(ngModel)]="sysOrganization.orgCreateTime">
+		      </nz-date-picker>
+		    </se>
+		    <se label="机构停运时间" error="请输入机构停运时间" >
+		      <nz-date-picker formControlName="orgStopTime" nzShowTime nzFormat="YYYY-MM-DD HH:mm:ss" nzDisabled=false
+		        [(ngModel)]="sysOrganization.orgStopTime">
+		      </nz-date-picker>
+		    </se>
+    <se>
+      <button *ngIf="sysOrganization.id" nz-button nzType="primary" (click)="update()" [disabled]="form.invalid">提交</button>
+      <button *ngIf="!sysOrganization.id" nz-button class="ml-sm">保存</button>
+      <button nz-button (click)="goback()">返回</button>
+    </se>
+  </form>
+</nz-card>
