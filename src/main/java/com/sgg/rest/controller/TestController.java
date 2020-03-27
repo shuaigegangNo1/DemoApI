@@ -2,16 +2,21 @@ package com.sgg.rest.controller;
 
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -31,12 +36,13 @@ import com.sgg.rest.service.UserService;
 import com.sgg.rest.util.DeletedEnum;
 import com.sgg.rest.util.PageRequest;
 import com.sgg.rest.util.StringUtils;
+import com.sgg.rest.util.UserRequest;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-
+import static com.sgg.rest.security.SecurityConstants.*;
 
 //@RestController
 //@RequestMapping("/test") // This means URL's start with /user (after Application path)
@@ -112,6 +118,14 @@ public class TestController {
 	private UserService userService;
 	@Autowired
 	private SysLogService sysLogService;
+
+	@Autowired
+	private HttpServletRequest request;
+	@ModelAttribute
+	public void bindRequest(HttpServletRequest request) {
+		this.request = request;
+	}
+	
     private static final Logger logger = LogManager.getLogger(TestController.class);
 	@RequestMapping(method = RequestMethod.GET,value = "/hi")
     @ApiOperation(value = "问候语", notes = "这是一个问候")
@@ -121,7 +135,13 @@ public class TestController {
 })
     public String hello(@RequestParam("name")  String  name,@RequestParam("age")  Integer age) {
 		logger.info(">>>>>>name>>>>>"+name);
-
+		System.out.println(">>>>>>name>>>>>"+name);
+//		 ServletRequestAttributes servletRequestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
+//		    HttpServletRequest request = servletRequestAttributes.getRequest();
+		    User u=new UserRequest().getCurrentUser();
+//		HttpSession session = request.getSession(true);
+//		User u=(User) session.getAttribute(CURRENT_USER_REQ);
+		    System.out.println("Name>>>>>>"+u.getName());
         return "Hell World " + name + age;
     }
 	

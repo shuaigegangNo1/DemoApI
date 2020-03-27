@@ -15,5 +15,7 @@ import com.sgg.rest.model.SysOrganization;
 @Mapper
 public interface SysOrganizationDao extends BaseMapper<SysOrganization>{
 	List<OrgDto> selectOrgListByOrgId(@Param("orgId") Integer orgId);
+
+	List<SysOrganization> selectOrgQueryList(@Param("orgName")String orgName, @Param("orgAbr")String orgAbr);
 }
 

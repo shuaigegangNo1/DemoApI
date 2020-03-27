@@ -8,6 +8,7 @@ import java.io.InputStreamReader;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -40,6 +41,11 @@ public class JWTAuthenticationFilter extends AbstractAuthenticationProcessingFil
 		User userEntity = loginService.Login(creds.getName(), creds.getPassword());
 		if (userEntity != null){
 			request.setAttribute(CURRENT_USER_REQ, userEntity);
+			User u=(User) request.getAttribute(CURRENT_USER_REQ);
+			HttpSession session = request.getSession(true);
+			session.setAttribute(CURRENT_USER_REQ, userEntity);
+
+			System.out.println(">>>>>user name"+u.getName());
 			return new TokenBasedAuthentication(creds.getName());
 		}
 		throw new AuthenticationException("用户验证失败:" + creds.getName()){{}};

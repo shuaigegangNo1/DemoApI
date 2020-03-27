@@ -10,10 +10,8 @@ public class SysUserRole{
 
 	private Integer id;
 
-	/*�û�ID*/
 	private Integer userId;
 
-	/*��ɫID*/
 	private Integer roleId;
 
 

@@ -44,13 +44,13 @@ public class GenBackEndUtil {
 	  private static final String PASS = "root";
     
     //指定实体生成所在包的路径
-    private static String basePath = new File("").getAbsolutePath();
+    public static String basePath = new File("").getAbsolutePath();
     //指定包名
-    private static String packageOutPath = "com.sgg.entity";
-    private static String packageOutServicePath = "com.sgg.service";
-    private static String packageOutServiceImplPath = "com.sgg.service.impl";
-    private static String packageOutDaoPath = "com.sgg.dao";
-    private static String packageXmlPath = "com.sgg.mapper";
+    public static String packageOutPath = "com.sgg.entity";
+    public static String packageOutServicePath = "com.sgg.service";
+    public static String packageOutServiceImplPath = "com.sgg.service.impl";
+    public static String packageOutDaoPath = "com.sgg.dao";
+    public static String packageXmlPath = "com.sgg.mapper";
     //作者名字
     private String authorName = "syg";
     //指定需要生成的表的表名，全部生成设置为null
@@ -58,7 +58,7 @@ public class GenBackEndUtil {
      //主键
     private static String pk;
  
-    private GenBackEndUtil() {
+    public GenBackEndUtil() {
     }
  
     /**
@@ -104,7 +104,7 @@ public class GenBackEndUtil {
         return sb.toString();
     }
  
-    private String parseService() {
+    private String parseService(String basePackage) {
         StringBuffer sb = new StringBuffer();
         sb.append("package " + packageOutServicePath + ";\r\n");
         sb.append("\r\n");
@@ -114,13 +114,13 @@ public class GenBackEndUtil {
         sb.append(" * create time: " + SDF.format(new Date()) + "\r\n");
         sb.append(" */ \r\n");
         sb.append("import com.baomidou.mybatisplus.service.IService;\r\n");
-        sb.append("import com.sgg.rest.model."+ under2camel(tableName, true)+";\r\n");
+        sb.append("import "+basePackage+"rest.model."+ under2camel(tableName, true)+";\r\n");
         sb.append("public interface " + under2camel(tableName, true)+ "Service extends IService<"+under2camel(tableName, true)+">{\r\n\r\n");
         sb.append("\r\n");
         sb.append("}\r\n");
         return sb.toString();
     }
-    private String parseServiceImpl() {
+    private String parseServiceImpl(String basePackage) {
         StringBuffer sb = new StringBuffer();
         sb.append("package " + packageOutServiceImplPath + ";\r\n");
         sb.append("\r\n");
@@ -131,23 +131,22 @@ public class GenBackEndUtil {
         sb.append(" */ \r\n");
         sb.append("import org.springframework.stereotype.Service;\r\n");
         sb.append("import com.baomidou.mybatisplus.service.impl.ServiceImpl;\r\n");
-        sb.append("import com.sgg.rest.dao."+ under2camel(tableName, true)+"Dao;\r\n");
-        sb.append("import com.sgg.rest.service."+ under2camel(tableName, true)+"Service;\r\n");
-        sb.append("import com.sgg.rest.model."+ under2camel(tableName, true)+";\r\n");
+        sb.append("import "+basePackage+"rest.dao."+ under2camel(tableName, true)+"Dao;\r\n");
+        sb.append("import "+basePackage+"rest.service."+ under2camel(tableName, true)+"Service;\r\n");
+        sb.append("import "+basePackage+"rest.model."+ under2camel(tableName, true)+";\r\n");
         sb.append("@Service\r\n");
         sb.append("public class " + under2camel(tableName, true)+ "ServiceImpl extends ServiceImpl<"+under2camel(tableName, true)+"Dao, "+under2camel(tableName, true)+">implements "+under2camel(tableName, true)+"Service{\r\n\r\n");
         sb.append("\r\n");
         sb.append("}\r\n");
         return sb.toString();
     }
-    private String parseDao() {
+    private String parseDao(String basePackage) {
         StringBuffer sb = new StringBuffer();
         sb.append("package " + packageOutDaoPath + ";\r\n");
         sb.append("\r\n");
         sb.append("import org.apache.ibatis.annotations.Mapper;\r\n");
         sb.append("import com.baomidou.mybatisplus.mapper.BaseMapper;\r\n");
-        sb.append("import com.sgg.rest.model."+ under2camel(tableName, true)+";\r\n");
-        
+        sb.append("import "+basePackage+"rest.model."+ under2camel(tableName, true)+";\r\n");
 
          // 注释部分
         sb.append("/**\r\n");
@@ -160,12 +159,12 @@ public class GenBackEndUtil {
         sb.append("}\r\n");
         return sb.toString();
     }
-    private String parseXml() {
+    private String parseXml(String basePackage) {
         StringBuffer sb = new StringBuffer();
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n" + 
         		"<!DOCTYPE mapper PUBLIC \"-//mybatis.org//DTD Mapper 3.0//EN\" \"http://mybatis.org/dtd/mybatis-3-mapper.dtd\">\r\n");
         sb.append("\r\n");
-        sb.append("<mapper namespace=\"com.sgg.rest.dao."+under2camel(tableName, true)+"Dao\">\r\n" +
+        sb.append("<mapper namespace=\""+basePackage+"rest.dao."+under2camel(tableName, true)+"Dao\">\r\n" +
         		"    <sql id=\"tableName\">\r\n" + 
         		"    "+tableName+"\r\n" + 
         		"    </sql>\r\n" +
@@ -366,11 +365,12 @@ public class GenBackEndUtil {
     /**
      * @description 生成方法
      */
-    private void generate(String packageName,String javaFileFormat,Integer flag) throws Exception {
+    public void generate(String ip, String dbName,String name, String passwd,String basePackage,String packageName,String javaFileFormat,Integer flag) throws Exception {
 
         PreparedStatement pStemt = null;
         //与数据库的连接
-    	Connection con = new MySqlUtil().getConnection("localhost","demo",NAME,PASS);
+        Connection con = new MySqlUtil().getConnection(ip,dbName,name,passwd);
+//    	Connection con = new MySqlUtil().getConnection("localhost","demo",NAME,PASS);
         System.out.println("connect database success..."+con);
         //获取数据库的元数据
         DatabaseMetaData db = con.getMetaData();
@@ -429,16 +429,16 @@ public class GenBackEndUtil {
 	        pw.println(parse());
 			break;
 		case 2:
-	        pw.println(parseService());
+	        pw.println(parseService(basePackage));
 			break;
 		case 3:
-	        pw.println(parseDao());
+	        pw.println(parseDao(basePackage));
 			break;
 		case 4:
-	        pw.println(parseServiceImpl());
+	        pw.println(parseServiceImpl(basePackage));
 			break;
 		case 5:
-	        pw.println(parseXml());
+	        pw.println(parseXml(basePackage));
 			break;
 		default:
 			break;
@@ -458,7 +458,7 @@ public class GenBackEndUtil {
 //        	  instance.generate(packageOutServicePath,"Service.java",2);
 //        	  instance.generate(packageOutDaoPath,"Dao.java",3);
 //        	  instance.generate(packageOutServiceImplPath,"ServiceImpl.java",4);
-        	  instance.generate(packageXmlPath,"Dao.xml",5);
+//        	  instance.generate(packageXmlPath,"Dao.xml",5);
             System.out.println("generate Entity to classes successful!");
         } catch (Exception e) {
             e.printStackTrace();

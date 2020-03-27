@@ -10,10 +10,21 @@
 
     <!-- 查询机构列表 -->
     <select id="selectOrgListByOrgId" resultType="com.sgg.rest.dto.OrgDto">
-        SELECT  id,org_name,org_abr         
+        SELECT  id,org_name as title,org_abr as 'key'        
         	FROM
             <include refid="tableName"></include>
             where org_parent_no = ${orgId} order by id asc
     </select>
-
+    
+    <!-- 查询机构列表 -->
+    <select id="selectOrgQueryList" resultType="com.sgg.rest.model.SysOrganization">
+        SELECT  *       
+        	FROM
+            <include refid="tableName"></include>
+            where
+            <if test="orgName != null">org_name like '%${orgName}%' and</if>
+            <if test="orgAbr != null">org_abr like '%${orgAbr}%' and</if>
+            1 = 1
+            order by id desc;
+    </select>
 </mapper>

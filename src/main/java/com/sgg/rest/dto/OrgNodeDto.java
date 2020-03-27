@@ -2,13 +2,13 @@ package com.sgg.rest.dto;
 
 import java.util.List;
 
-public class OrgDto {
+public class OrgNodeDto {
 	private Integer id;
 	private String key;
 	private String title;
 	private boolean isLeaf;
 	private boolean expanded;
-	private List<OrgDto> children;
+	private List<OrgNodeDto> children;
 	public Integer getId() {
 		return id;
 	}
@@ -40,13 +40,11 @@ public class OrgDto {
 	public void setExpanded(boolean expanded) {
 		this.expanded = expanded;
 	}
-	public List<OrgDto> getChildren() {
+	public List<OrgNodeDto> getChildren() {
 		return children;
 	}
-	public void setChildren(List<OrgDto> children) {
+	public void setChildren(List<OrgNodeDto> children) {
 		this.children = children;
 	}
-
-
 
 }

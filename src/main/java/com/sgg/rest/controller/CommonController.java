@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sgg.rest.dto.TableDto;
 import com.sgg.rest.util.FtlUtil;
+import com.sgg.rest.util.GenBackEndUtil;
 import com.sgg.rest.util.MySqlUtil;
 
 import io.swagger.annotations.Api;
@@ -57,11 +58,11 @@ public ResponseEntity<Map<String,Object>> findPage(String ip,String db,String na
 	} 
 	 	
 	 	
-	 	@ApiOperation(value = "创建模板",notes = "")
+	 	@ApiOperation(value = "创建前台模板",notes = "")
 		@RequestMapping(value="/createTemplate", method= RequestMethod.POST)
-	public ResponseEntity<Map<String,Object>> createtTemplate(@RequestParam String ip,@RequestParam String db,@RequestParam String name,@RequestParam String passwd,@RequestParam int templateType,@RequestBody List<TableDto> tlist) throws Exception {
+	public ResponseEntity<Map<String,Object>> createtTemplate(@RequestParam String ip,@RequestParam String db,@RequestParam String name,@RequestParam String passwd,@RequestParam int templateType,@RequestParam String outPath,@RequestBody List<TableDto> tlist) throws Exception {
 			Map<String,Object> map = new HashMap<String,Object>();
-			String outPath="D:/Projects/DemoAPI/doc/";
+//			String outPath="D:/Projects/DemoAPI/doc/";
 			for(int j =0;j<tlist.size();j++) {
 				    String  tableName = tlist.get(j).getName();
 				    String  tableIndex = tlist.get(j).getComment();
@@ -96,6 +97,48 @@ public ResponseEntity<Map<String,Object>> findPage(String ip,String db,String na
 						break;
 					}
 				}
+				map.put("data", "创建成功");
+				return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+	 	}
+	 	
+	 	@ApiOperation(value = "创建后台模板",notes = "")
+		@RequestMapping(value="/createBackEndTemplate", method= RequestMethod.POST)
+	public ResponseEntity<Map<String,Object>> createtBackEndTemplate(@RequestParam String ip,@RequestParam String db,@RequestParam String name,@RequestParam String passwd,@RequestParam Integer flag,@RequestParam String outPutPath) {
+			Map<String,Object> map = new HashMap<String,Object>();
+	    	GenBackEndUtil instance = new GenBackEndUtil();
+//	    	instance.basePath="D:\\Projects\\ImporExcel"; //指定生成的位置,默认是当前工程
+	    	instance.basePath= outPutPath; 
+	        String basePackagePath = "com.sgg.";
+	        try {
+	        	switch (flag) {
+				case 1:
+					instance.generate(ip,db,name,passwd,basePackagePath,basePackagePath+"model",".java",flag);
+					break;
+				case 2:
+					instance.generate(ip,db,name,passwd,basePackagePath,basePackagePath+"service","Service.java",flag);
+					break;
+				case 3:
+					instance.generate(ip,db,name,passwd,basePackagePath,basePackagePath+"dao","Dao.java",flag);
+					break;
+				case 4:
+					instance.generate(ip,db,name,passwd,basePackagePath,basePackagePath+"service.impl","ServiceImpl.java",flag);
+					break;
+				case 5:
+					instance.generate(ip,db,name,passwd,basePackagePath,basePackagePath+"mapper","Dao.xml",flag);
+					break;
+				case 6:
+					instance.generate(ip,db,name,passwd,basePackagePath,basePackagePath+"model",".java",flag);
+					instance.generate(ip,db,name,passwd,basePackagePath,basePackagePath+"service","Service.java",flag);
+					instance.generate(ip,db,name,passwd,basePackagePath,basePackagePath+"dao","Dao.java",flag);
+					instance.generate(ip,db,name,passwd,basePackagePath,basePackagePath+"service.impl","ServiceImpl.java",flag);
+					instance.generate(ip,db,name,passwd,basePackagePath,basePackagePath+"mapper","Dao.xml",flag);
+					break;
+				default:
+					break;
+				}
+	        } catch (Exception e) {
+	            e.printStackTrace();
+	        }
 				map.put("data", "创建成功");
 				return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 	 	}

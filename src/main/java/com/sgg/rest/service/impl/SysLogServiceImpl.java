@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.service.impl.ServiceImpl;
 import com.sgg.rest.dao.SysLogDao;
 import com.sgg.rest.service.SysLogService;
+import com.sgg.rest.util.StringUtils;
 import com.sgg.rest.model.SysLog;
 @Service
 public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLog>implements SysLogService{
@@ -18,6 +19,12 @@ public class SysLogServiceImpl extends ServiceImpl<SysLogDao, SysLog>implements 
 	private SysLogDao sysLogDao;
 	@Override
 	public List<SysLog> selectLogList(String fromTime, String toTime) {
+		if(!StringUtils.isNotBlank(fromTime)) {
+			fromTime =null;
+		}
+		if(!StringUtils.isNotBlank(toTime)) {
+			toTime = null;
+		}
 		List<SysLog> sysLogList = sysLogDao.selectLogList( fromTime,  toTime);
 		return sysLogList;
 	}

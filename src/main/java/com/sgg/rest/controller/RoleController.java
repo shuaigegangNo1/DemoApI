@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.sgg.rest.model.SysRole;
 import com.sgg.rest.service.SysRoleService;
+import com.sgg.rest.util.BussinessException;
 import com.sgg.rest.util.DeletedEnum;
 
 import io.swagger.annotations.Api;
@@ -33,6 +34,7 @@ public class RoleController {
 //    	wrapper.eq("deleted",DeletedEnum.N.value());
     	wrapper.orderBy("id", false);
 		map.put("list", sysRoleService.selectList(wrapper));
-		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+		throw new BussinessException("500","除数不能为0");
+//		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
  }
 }

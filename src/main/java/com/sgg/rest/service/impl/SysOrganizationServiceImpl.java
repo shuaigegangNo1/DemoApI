@@ -45,6 +45,11 @@ public class SysOrganizationServiceImpl extends ServiceImpl<SysOrganizationDao, 
 		boolean res =this.insert(sysOrg);
 		return res;
 	}
+	@Override
+	public List<SysOrganization> selectOrgQueryList(String orgName, String orgAbr) {
+	    List<SysOrganization> orgList = sysOrganizationDao.selectOrgQueryList(orgName,orgAbr);
+		return orgList;
+	}
 
 
 }

@@ -1,6 +1,8 @@
 package com.sgg.rest.model;
 
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * table name:  sys_organization
  * author name: syg
@@ -8,49 +10,38 @@ import java.util.Date;
  */ 
 public class SysOrganization{
 
-	/*����*/
 	private Integer id;
 
-	/*�������*/
 	private String orgNo;
 
-	/*����ȫ��*/
 	private String orgName;
 
-	/*�������*/
 	private String orgAbr;
 
-	/*��������*/
 	private String orgType;
 
-	/*����״̬,1δӪҵ��2����Ӫҵ��3��ͣӪҵ��4��ֹӪҵ��5�ѳ���*/
 	private String orgStatus;
 
-	/*�������ڵ���*/
 	private String orgParentNo;
 
-	/*������ʾ˳��*/
 	private String sort;
 
-	/*��ע*/
 	private String remark;
 
-	/*����ʱ��*/
+    @JsonFormat(pattern="yyyy/MM/dd HH:mm:ss",timezone = "GMT+8")
 	private Date createTime;
 
-	/*������*/
 	private String creator;
 
-	/*����ʱ��*/
+    @JsonFormat(pattern="yyyy/MM/dd HH:mm:ss",timezone = "GMT+8")
 	private Date updateTime;
 
-	/*������*/
 	private String updater;
 
-	/*��������ʱ��*/
+    @JsonFormat(pattern="yyyy/MM/dd HH:mm:ss",timezone = "GMT+8")
 	private Date orgCreateTime;
 
-	/*����ͣ��ʱ��*/
+    @JsonFormat(pattern="yyyy/MM/dd HH:mm:ss",timezone = "GMT+8")
 	private Date orgStopTime;
 
 

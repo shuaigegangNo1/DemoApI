@@ -16,5 +16,7 @@ public interface SysOrganizationService extends IService<SysOrganization>{
 
 	boolean createOrg(Integer orgParentNo, String orgName, String orgAbr, Integer orgStatus, String orgNo, Integer sort,
 			Date orgCreateTime, Date orgStopTime);
+
+	List<SysOrganization> selectOrgQueryList(String orgName, String orgAbr);
 }
 

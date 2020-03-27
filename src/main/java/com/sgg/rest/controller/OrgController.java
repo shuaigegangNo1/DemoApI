@@ -1,6 +1,5 @@
 package com.sgg.rest.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -11,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.sgg.rest.annotation.MyLog;
 import com.sgg.rest.dto.OrgDto;
+import com.sgg.rest.model.SysOrganization;
 import com.sgg.rest.model.User;
 import com.sgg.rest.service.SysOrganizationService;
 import com.sgg.rest.util.StringUtils;
@@ -48,8 +49,10 @@ public class OrgController {
         			for(OrgDto orgDto2 :secondOrgDtoList) {
         				List<OrgDto> thirdOrgDtoList = orgService.selectOrgList(orgDto2.getId());
         				orgDto2.setChildren(thirdOrgDtoList);
+        				orgDto2.setExpanded(true);
         			}
         		orgDto.setChildren(secondOrgDtoList);
+        		orgDto.setExpanded(true);
         	}
         map.put("data", orgList);
         return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
@@ -66,7 +69,7 @@ public class OrgController {
         @ApiImplicitParam(required = true, paramType ="query", name = "orgCreateTime", value = "开创时间",dataType = "date"),
         @ApiImplicitParam(required = false, paramType ="query", name = "orgStopTime", value = "停业时间",dataType = "date"),
 })
-	@RequestMapping(value="/create", method= RequestMethod.GET)
+	@RequestMapping(value="/create1", method= RequestMethod.GET)
 public ResponseEntity<Map<String,Object>> updatePasswd
 		(@RequestParam(value="orgParentNo",required=false ) Integer orgParentNo, @RequestParam(value="orgAbr",required=true ) String orgAbr,@RequestParam(value="orgName",required=true ) String orgName, 
 		@RequestParam(value="orgStatus",required=false ) Integer orgStatus, @RequestParam(value="orgNo",required=true ) String orgNo, @RequestParam(value="sort",required=false ) Integer sort,
@@ -83,4 +86,29 @@ public ResponseEntity<Map<String,Object>> updatePasswd
 		map.put("data", res);
 		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
 }
+	@RequestMapping(value="/create", method= RequestMethod.POST)
+public ResponseEntity<Map<String,Object>> createOrg(@RequestBody SysOrganization sysOrganization) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		boolean res = orgService.insert(sysOrganization);
+		map.put("data", res);
+		return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+} 
+	
+    /**
+     * 获取机构列表
+     * @return
+     */
+    @GetMapping(value = "/querylist")
+    @ApiOperation(value = "获取机构列表")
+	@MyLog(value = "获取机构列表")
+    @ApiImplicitParams({
+        @ApiImplicitParam(required = false, paramType ="query", name = "orgName", value = "全称"),
+        @ApiImplicitParam(required = false, paramType ="query", name = "orgAbr", value = "简称")
+})
+    public ResponseEntity<Map<String,Object>> getOrgQueryList(@RequestParam(value="orgName",required=false ) String orgName, @RequestParam(value="orgAbr",required=false ) String orgAbr) {
+    	Map<String,Object> map = new HashMap<String,Object>();
+        List<SysOrganization> orgList = orgService.selectOrgQueryList(orgName,orgAbr);
+        map.put("data", orgList);
+        return new ResponseEntity<Map<String,Object>>(map,HttpStatus.OK);
+    }
 }
